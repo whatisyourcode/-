@@ -1,0 +1,10 @@
+@font-face {
+    font-family: 'BMJUA';
+    src: url('/fonts/BMJUA_tff.tff') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'BMJUA', sans-serif; /* BMJUA 폰트를 적용 */
+}
