@@ -44,7 +44,7 @@
 <!-- 네비게이션 바 -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary jua-regular">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/board/todoBoard" style="margin-left: 15px;">TO-DO</a>
+    <a class="navbar-brand" href="/user/home" style="margin-left: 15px;">TO-DO</a>
   </div>
 </nav>
 
@@ -64,7 +64,7 @@
       <h3 class="mb-3">로그인</h3>
       <input type="text" id="userId" name="userId" class="form-control mb-3" placeholder="아이디" required>
       <div class="info-text mb-3">
-        계정이 없으신가요? <a href="#" class="link-text">계정을 만드세요!</a>
+        계정이 없으신가요? <a href="/user/registerForm" class="link-text">계정을 만드세요!</a>
       </div>
       <button type="button" class="btn btn-primary" onclick="goToPasswordStep()">다음</button>
     </div>
@@ -76,7 +76,7 @@
       <h3 class="mb-3">로그인</h3>
       <input type="password" id="password" name="password" class="form-control mb-3" placeholder="비밀번호" required>
       <div class="info-text mb-3">
-        계정이 없으신가요? <a href="#" class="link-text">계정을 만드세요!</a>
+        계정이 없으신가요? <a href="/user/registerForm" class="link-text">계정을 만드세요!</a>
       </div>
       <button type="submit" class="btn btn-primary">로그인</button>
     </div>
@@ -90,7 +90,7 @@
     if (username) {
       document.getElementById('username-step').style.display = 'none';
       document.getElementById('password-step').style.display = 'block';
-    } else {
+
       alert('아이디를 입력해주세요.');
     }
   }

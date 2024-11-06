@@ -28,8 +28,9 @@ public class SercurityConfig {
         http.authorizeHttpRequests()
                 .antMatchers("/css/**").permitAll() // CSS 파일에 대한 요청 허용
                 .antMatchers("/js/**").permitAll() // JS 파일에 대한 요청 허용
-                .antMatchers("/user/home").permitAll() // 로그인 페이지에 대한 요청 허용
                 .antMatchers("/board/**").permitAll()
+                .antMatchers("/user/**").permitAll()
+                .antMatchers("/login/**").permitAll()
                 .anyRequest().authenticated() // 나머지 요청은 인증된 사용자만 허용
                 .and()
                 .formLogin() // 폼 로그인 활성화

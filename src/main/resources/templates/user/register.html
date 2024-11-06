@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&family=Jua&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>회원가입</title>
+  <style>
+    .signup-card {
+      max-width: 400px;
+      margin: 0 auto;
+      margin-top: 100px;
+      padding: 30px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      border-radius: 8px;
+      text-align: center;
+    }
+    .jua-regular {
+      font-family: "Jua", sans-serif;
+      font-weight: 400;
+      font-style: normal;
+    }
+    .btn-primary {
+      width: 100%;
+    }
+    .info-text {
+      font-size: 14px;
+      color: #6c757d;
+    }
+    .link-text {
+      font-size: 14px;
+      color: #007bff;
+      text-decoration: none;
+    }
+    .link-text:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<!-- 네비게이션 바 -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary jua-regular">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/user/home">TO-DO</a>
+  </div>
+</nav>
+
+<div class="container jua-regular">
+  <div class="signup-card bg-light">
+    <form action="/user/register" method="post">
+      <!-- 사용자 ID 입력 단계 -->
+      <div id="username-step">
+        <h3 class="mb-3">회원가입</h3>
+
+        <!-- 이름 입력 필드 및 중복 확인 버튼 (오른쪽 정렬) -->
+        <div class="input-group mb-3">
+          <input type="text" name="userName" class="form-control" placeholder="이름" required>
+          <button type="button" class="btn btn-secondary btn-sm" id="checkUserNameBtn">이름 중복 확인</button>
+        </div>
+
+        <!-- 아이디 입력 필드 및 중복 확인 버튼 -->
+        <div class="input-group mb-3">
+          <input type="text" name="userId" class="form-control" placeholder="아이디" required>
+          <button type="button" class="btn btn-secondary btn-sm" id="checkUserIdBtn">아이디 중복 확인</button>
+        </div>
+
+        <!-- 다음 버튼 -->
+        <button type="button" class="btn btn-primary" onclick="goToNextStep('password-step')">다음</button>
+      </div>
+
+      <!-- 비밀번호 입력 단계 -->
+      <div id="password-step" style="display: none;">
+        <h3 class="mb-3">비밀번호 설정</h3>
+        <input type="password" id="password" name="password" class="form-control mb-3" placeholder="비밀번호" required>
+        <input type="password" id="confirmPassword" name="confirmPassword" class="form-control mb-3" placeholder="비밀번호 확인" required>
+        <div id="password-error" style="color: red; display: none;">비밀번호가 일치하지 않습니다.</div>
+        <button type="button" class="btn btn-primary" onclick="validatePasswords()">다음</button>
+      </div>
+
+      <!-- 이메일 입력 단계 -->
+      <div id="email-step" style="display: none;">
+        <h3 class="mb-3">이메일 입력</h3>
+        <input type="email" name="email" class="form-control mb-3" placeholder="이메일" required>
+        <button type="submit" class="btn btn-primary">회원가입 완료</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<script>
+  function goToNextStep(stepId) {
+    document.querySelectorAll('.signup-card > form > div').forEach(div => div.style.display = 'none');
+    document.getElementById(stepId).style.display = 'block';
+  }
+
+  // 비밀번호 검증
+  function validatePasswords() {
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const errorDiv = document.getElementById('password-error');
+
+    if (password !== confirmPassword) {
+      errorDiv.style.display = 'block';
+    } else {
+      errorDiv.style.display = 'none';
+      goToNextStep('email-step');
+    }
+  }
+  // 아이디 검증
+  document.getElementById("checkUserIdBtn").addEventListener("click", function() {
+    var userId = document.querySelector('input[name="userId"]').value;
+    fetch(`/user/register/userIdConfirm/${userId}`)
+            .then(response => response.json())
+            .then(isExist => {
+              if (isExist) {
+                alert("아이디가 이미 존재합니다.");
+              } else {
+                alert("사용 가능한 아이디입니다.");
+              }
+            })
+            .catch(error => console.error("Error:", error));
+  });
+  // 유저 이름 검증
+  document.getElementById("checkUserNameBtn").addEventListener("click", function() {
+    var userName = document.querySelector('input[name="userName"]').value;
+    fetch(`/user/register/nameConfirm/${userName}`)
+            .then(response => response.json())
+            .then(isExist => {
+              if (isExist) {
+                alert("이름이 이미 존재합니다.");
+              } else {
+                alert("사용 가능한 이름입니다.");
+              }
+            })
+            .catch(error => console.error("Error:", error));
+  });
+</script>
+
+</body>
+</html>
