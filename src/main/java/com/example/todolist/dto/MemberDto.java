@@ -13,16 +13,16 @@ import javax.validation.constraints.NotBlank;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
+public class MemberDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank(message = "이메일 주소를 입력해주세요.")
-    private String userId;
+    private String memberId;
 
     @NotBlank(message = "닉네임을 입력해주세요.")
-    private String userName;
+    private String memberName;
 
     @NotBlank(message = "패스워드를 입력해주세요.")
     private String password;

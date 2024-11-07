@@ -1,0 +1,29 @@
+.signup-card {
+    max-width: 400px;
+    margin: 0 auto;
+    margin-top: 100px;
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    text-align: center;
+}
+.jua-regular {
+    font-family: "Jua", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+.btn-primary {
+    width: 100%;
+}
+.info-text {
+    font-size: 14px;
+    color: #6c757d;
+}
+.link-text {
+    font-size: 14px;
+    color: #007bff;
+    text-decoration: none;
+}
+.link-text:hover {
+    text-decoration: underline;
+}

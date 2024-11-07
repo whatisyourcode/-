@@ -4,71 +4,41 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="/css/register.css">
   <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&family=Jua&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
   <meta charset="UTF-8">
   <title>회원가입</title>
-  <style>
-    .signup-card {
-      max-width: 400px;
-      margin: 0 auto;
-      margin-top: 100px;
-      padding: 30px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      border-radius: 8px;
-      text-align: center;
-    }
-    .jua-regular {
-      font-family: "Jua", sans-serif;
-      font-weight: 400;
-      font-style: normal;
-    }
-    .btn-primary {
-      width: 100%;
-    }
-    .info-text {
-      font-size: 14px;
-      color: #6c757d;
-    }
-    .link-text {
-      font-size: 14px;
-      color: #007bff;
-      text-decoration: none;
-    }
-    .link-text:hover {
-      text-decoration: underline;
-    }
-  </style>
 </head>
 <body>
 
 <!-- 네비게이션 바 -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary jua-regular">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/user/home">TO-DO</a>
+    <a class="navbar-brand" href="/member/home">TO-DO</a>
   </div>
 </nav>
 
 <div class="container jua-regular">
   <div class="signup-card bg-light">
-    <form action="/user/register" method="post">
+    <form action="/member/register" method="post">
       <!-- 사용자 ID 입력 단계 -->
       <div id="username-step">
         <h3 class="mb-3">회원가입</h3>
 
         <!-- 이름 입력 필드 및 중복 확인 버튼 (오른쪽 정렬) -->
         <div class="input-group mb-3">
-          <input type="text" name="userName" class="form-control" placeholder="이름" required>
-          <button type="button" class="btn btn-secondary btn-sm" id="checkUserNameBtn">이름 중복 확인</button>
+          <input type="text" name="memberName" class="form-control" placeholder="이름" required>
+          <button type="button" class="btn btn-secondary btn-sm" id="checkMemberNameBtn">이름 중복 확인</button>
         </div>
 
         <!-- 아이디 입력 필드 및 중복 확인 버튼 -->
         <div class="input-group mb-3">
-          <input type="text" name="userId" class="form-control" placeholder="아이디" required>
-          <button type="button" class="btn btn-secondary btn-sm" id="checkUserIdBtn">아이디 중복 확인</button>
+          <input type="text" name="memberId" class="form-control" placeholder="아이디" required>
+          <button type="button" class="btn btn-secondary btn-sm" id="checkMemberIdBtn">아이디 중복 확인</button>
         </div>
 
         <!-- 다음 버튼 -->
-        <button type="button" class="btn btn-primary" onclick="goToNextStep('password-step')">다음</button>
+        <button type="button" class="btn btn-primary" onclick="goToNextStep('password-step')" id="nextButton" disabled>다음</button>
       </div>
 
       <!-- 비밀번호 입력 단계 -->
@@ -92,6 +62,18 @@
 </div>
 
 <script>
+
+  // 중복 확인을 위한 변수
+  let isMemberNameAvailable = false;
+  let isMemberIdAvailable = false;
+
+  // 다음 버튼 활성화 함수
+  function enableNextButton() {
+    const nextButton = document.getElementById("nextButton");
+    nextButton.disabled = !(isMemberNameAvailable && isMemberIdAvailable);
+  }
+
+  // 각 단계로 이동하는 함수
   function goToNextStep(stepId) {
     document.querySelectorAll('.signup-card > form > div').forEach(div => div.style.display = 'none');
     document.getElementById(stepId).style.display = 'block';
@@ -110,35 +92,43 @@
       goToNextStep('email-step');
     }
   }
+
   // 아이디 검증
-  document.getElementById("checkUserIdBtn").addEventListener("click", function() {
-    var userId = document.querySelector('input[name="userId"]').value;
-    fetch(`/user/register/userIdConfirm/${userId}`)
+  document.getElementById("checkMemberIdBtn").addEventListener("click", function() {
+    var memberId = document.querySelector('input[name="memberId"]').value;
+    fetch(`/member/register/memberIdConfirm/${memberId}`)
             .then(response => response.json())
             .then(isExist => {
               if (isExist) {
                 alert("아이디가 이미 존재합니다.");
+                isMemberIdAvailable = false;
               } else {
                 alert("사용 가능한 아이디입니다.");
+                isMemberIdAvailable = true;
               }
+              enableNextButton();  // 버튼 상태 업데이트
             })
             .catch(error => console.error("Error:", error));
   });
+
   // 유저 이름 검증
-  document.getElementById("checkUserNameBtn").addEventListener("click", function() {
-    var userName = document.querySelector('input[name="userName"]').value;
-    fetch(`/user/register/nameConfirm/${userName}`)
+  document.getElementById("checkMemberNameBtn").addEventListener("click", function() {
+    var memberName = document.querySelector('input[name="memberName"]').value;
+    fetch(`/member/register/memberNameConfirm/${memberName}`)
             .then(response => response.json())
             .then(isExist => {
               if (isExist) {
                 alert("이름이 이미 존재합니다.");
+                isMemberNameAvailable = false;
               } else {
                 alert("사용 가능한 이름입니다.");
+                isMemberNameAvailable = true;
               }
+              enableNextButton();  // 버튼 상태 업데이트
             })
             .catch(error => console.error("Error:", error));
   });
-</script>
 
+</script>
 </body>
 </html>
