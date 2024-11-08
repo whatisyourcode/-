@@ -1,8 +1,11 @@
 package com.example.todolist.security;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,22 +17,34 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @Slf4j
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final CustomMemberDetailsService customMemberDetailsService;
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(customMemberDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(); // BCrypt 해시 알고리즘 사용
     }
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         log.info("------- filterChain ------");
-
         http
+                .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests()
-                .antMatchers("/css/**", "/js/**", "/board/**", "/user/**", "/login/**").permitAll()
-                .antMatchers("/member/home","/member/register","/member/registerForm","/member/register/memberIdConfirm/**","/member/register/nameConfirm/**").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/css/**", "/js/**").permitAll()
+                .antMatchers("/member/home", "/member/register", "/member/registerForm").permitAll()
+                .anyRequest().hasRole("MEMBER")  // 나머지 요청은 MEMBER 역할을 가진 사용자만 접근 허용
                 .and()
                 .formLogin()
                 .loginPage("/member/home")  // 로그인 페이지
@@ -46,16 +61,5 @@ public class SecurityConfig {
     }
 
 
-//    @Bean
-//    public DaoAuthenticationProvider authenticationProvider(CustomMemberDetailsService customMemberDetailsService) {
-//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-//
-//        // 사용자 정보를 조회할 서비스 설정 (CustomUserDetailsService 사용)
-//        provider.setUserDetailsService(customMemberDetailsService);
-//
-////        // 비밀번호를 인코딩할 PasswordEncoder 설정 (passwordEncoder() 메서드 호출)
-////        provider.setPasswordEncoder(passwordEncoder());
-//
-//        return provider;
-//    }
+
 }

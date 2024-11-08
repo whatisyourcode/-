@@ -21,21 +21,6 @@ public class MemberService {
 
     private final PasswordEncoder passwordEncoder;
 
-    // Security 사용으로 주석 처리
-//    public boolean isValidUser(String id, String password) {
-//        Member user = memberRepository.findByMemberId(id);
-//        if(user != null){
-//            return passwordEncoder.matches(password, user.getPassword());
-//        }
-//        return false;
-//    }
-
-    // Security 사용으로 주석 처리
-//    public void registerUser(MemberDto memberDto) {
-//        Member user = toUserEntity(memberDto);
-//        memberRepository.save(user);
-//    }
-
     public Member registerMember(MemberDto memberDto) {
         // 비밀번호 암호화
         Member member = toMemberEntity(memberDto);
@@ -63,22 +48,5 @@ public class MemberService {
         }
         return validatorResult;
     }
-
-
-
-//    public void isMemberIdExist(MemberDto dto) {
-//        boolean memberIdDuplicate = memberRepository.existsByMemberId(dto.getMemberId());
-//        if(memberIdDuplicate) {
-//            throw new IllegalStateException("이미 존재하는 아이디입니다.");
-//        }
-//    }
-//
-//    public void isMemberNameExist(MemberDto dto) {
-//        boolean memberNameDuplicate = memberRepository.existsByMemberName(dto.getMemberName());
-//        if(memberNameDuplicate) {
-//            throw new IllegalStateException("이미 존재하는 이름입니다.");
-//        }
-//    }
-
 
 }
