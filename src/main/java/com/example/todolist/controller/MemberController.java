@@ -28,9 +28,8 @@ public class MemberController {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.setValidator(checkMemberIdValidator);
-        binder.setValidator(checkMemberNameValidator);
-        binder.setValidator(checkMemberEmailValidator);
+        // 여러 검증기를 추가하여 모두 적용
+        binder.addValidators(checkMemberIdValidator, checkMemberNameValidator, checkMemberEmailValidator);
     }
 
     @GetMapping("/home")
@@ -55,7 +54,8 @@ public class MemberController {
 
 
     @GetMapping("/registerForm")
-    public String registerForm() {
+    public String registerForm(Model model) {
+        model.addAttribute("memberDto", new MemberDto()); // 초기 빈 객체 추가.
         return "/member/register";
     }
 
@@ -67,16 +67,17 @@ public class MemberController {
 
             // 유효성 통과 못한 필드와 메시지를 핸들링
             Map<String,String> validatorResult = memberService.validateHandling(errors);
+
+            // 각 오류 메시지를 필드 이름과 함께 모델에 추가하여 화면에서 표시할 수 있도록 함
             for(String key : validatorResult.keySet()) {
                 model.addAttribute(key, validatorResult.get(key));
             }
-            return "/member/registerForm";
-
+            return "/member/register";
         }
 
         if(!memberDto.getPassword().equals(memberDto.getConfirmPassword())) {
-            model.addAttribute("error", "Passwords do not match");
-            return "/member/registerForm";
+            model.addAttribute("passwordError", "Passwords do not match");
+            return "/member/register";
         }
 
         memberService.registerMember(memberDto);

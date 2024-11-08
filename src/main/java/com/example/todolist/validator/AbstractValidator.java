@@ -30,4 +30,4 @@ public abstract class AbstractValidator<T> implements Validator {
 // validate() 메서드가 doValidate() 메서드와 별도로 존재하는 이유
 // doValidate() 에서 발생할 수 있는 예외를 catch하여 로그를 기록하고, 다시 던지는 로직을 validate()에서 처리하고 있다.
 // 이는 모든 서브클래스가 doValidate()를 구현할 때마다 동일한 예외 처리 로직을 중복해서 작성하는 것을 방지한다.
-// 결론적으로 검증에 필요한 공통 동작을 한 곳에서 처맇라 수 있게 해준다.
+// 결론적으로 검증에 필요한 공통 동작을 한 곳에서 처리할 수 있게 해준다.

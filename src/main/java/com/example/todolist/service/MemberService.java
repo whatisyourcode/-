@@ -57,6 +57,7 @@ public class MemberService {
         Map<String,String> validatorResult = new HashMap<>();
 
         for(FieldError fieldError : errors.getFieldErrors()) {
+            System.out.println(fieldError.getField());
             String validKeyName = String.format("valid_%s", fieldError.getField());
             validatorResult.put(validKeyName, fieldError.getDefaultMessage());
         }

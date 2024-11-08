@@ -9,7 +9,8 @@ import org.springframework.validation.Errors;
 @RequiredArgsConstructor
 @Component
 public class CheckMemberIdValidator extends AbstractValidator<MemberDto>{
-    MemberRepository memberRepository;
+
+    private final MemberRepository memberRepository;
 
     @Override
     protected void doValidate(MemberDto dto, Errors errors) {
