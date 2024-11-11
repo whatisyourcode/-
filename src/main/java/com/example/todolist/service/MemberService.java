@@ -39,14 +39,13 @@ public class MemberService {
     }
 
     public Map<String,String> validateHandling(Errors errors) {
-        Map<String,String> validatorResult = new HashMap<>();
+        Map<String, String> validatorResult = new HashMap<>();
 
-        for(FieldError fieldError : errors.getFieldErrors()) {
+        for (FieldError fieldError : errors.getFieldErrors()) {
             System.out.println(fieldError.getField());
             String validKeyName = String.format("valid_%s", fieldError.getField());
             validatorResult.put(validKeyName, fieldError.getDefaultMessage());
         }
         return validatorResult;
     }
-
 }
