@@ -15,6 +15,10 @@ public class CustomMemberDetails implements UserDetails {
         this.member = member;
     }
 
+    public Member getMember() {
+        return this.member;
+    }
+
     // 사용자 권한을 반환하는 메서드
     // member의 역할을 "ROLE_" 접두어와 함께 권한 목록으로 반환
     @Override

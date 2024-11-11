@@ -32,4 +32,7 @@ public class Board {
 
     private boolean editing = false;
 
+    @ManyToOne
+    @JoinColumn(name ="memberId")
+    private Member member;
 }

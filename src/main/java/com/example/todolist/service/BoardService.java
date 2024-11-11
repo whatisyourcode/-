@@ -3,6 +3,7 @@ package com.example.todolist.service;
 import com.example.todolist.controller.BoardController;
 import com.example.todolist.dto.BoardDto;
 import com.example.todolist.entity.Board;
+import com.example.todolist.entity.Member;
 import com.example.todolist.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,10 @@ public class BoardService {
     public List<Board> findAllBoardList() {
         List<Board> boardList = boardRepository.findAll();
         return boardList;
+    }
+
+    public List<Board> findBoardsByMember(String memberName) {
+        return boardRepository.findBoardsByMember(memberName); // 로그인된 사용자 이름인 게시글만 반환
     }
 
     public void registerBoard(Board board) {
@@ -60,16 +65,17 @@ public class BoardService {
 
 
     // DTO -> Entity
-    public Board DTOtoEntityForRegister(BoardDto boardDto){
+    public Board DTOtoEntityForRegister(BoardDto boardDto, Member member){
         return new Board(
                 boardDto.getBoardId(),
                 boardDto.getContent(),
-                boardDto.getCreatedId(),
+                member.getMemberId(),
                 LocalDateTime.now().toString().substring(1,10),
                 boardDto.getUpdatedDateTime(),
-                "admin",
+                member.getMemberName(),
                 false,
-                false
+                false,
+                member
         );
     }
 

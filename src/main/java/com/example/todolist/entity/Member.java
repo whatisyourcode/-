@@ -1,11 +1,10 @@
 package com.example.todolist.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -29,4 +28,8 @@ public class Member {
     private String createdDateTime;
 
     private String role;
+
+    @OneToMany(mappedBy = "member")
+    @ToString.Exclude
+    private List<Board> todoBoards = new ArrayList<>();
 }

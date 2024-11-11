@@ -27,6 +27,10 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
+    public Member findByMemberId(Long memberId) {
+        return memberRepository.findById(memberId).orElse(null);
+    }
+
     public Member toMemberEntity(MemberDto memberDto) {
         Member member = new Member();
         member.setMemberId(memberDto.getMemberId());

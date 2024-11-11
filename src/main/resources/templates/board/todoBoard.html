@@ -27,7 +27,6 @@
             padding: 20px;
             background-color: #f9f9f9; /* 연한 배경색 */
         }
-
     </style>
 </head>
 <body>
@@ -36,6 +35,11 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary jua-regular">
     <div class="container-fluid">
         <a class="navbar-brand" href="/board/todoBoard" style="margin-left: 15px;">TO-DO</a>
+        <div class="d-flex ms-auto">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="btn btn-outline-light">로그아웃</button>
+            </form>
+        </div>
     </div>
 </nav>
 
