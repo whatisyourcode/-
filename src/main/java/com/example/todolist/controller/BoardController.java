@@ -51,6 +51,7 @@ public class BoardController {
         log.info("boardList = " + boardList);
 
         model.addAttribute("boardList",boardList);
+        // 기존의 boardDto 가 없으면 에러가 나기 때문에 BoardDto를 임시로 사용.
         model.addAttribute("boardDto",new BoardDto());
         return "/board/todoBoard";
     }

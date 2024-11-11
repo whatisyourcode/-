@@ -54,7 +54,7 @@
       <div th:if="${valid_memberName}" class="error-message" th:text="${valid_memberName}"></div>
 
       <!-- 아이디 입력 -->
-      <div class="input-group mb-1">
+      <div class="input-group mb-3">
         <input type="text" name="memberId" class="form-control" placeholder="아이디" required th:value="${memberDto.memberId}">
       </div>
       <div th:if="${valid_memberId}" class="error-message" th:text="${valid_memberId}"></div>
@@ -64,12 +64,12 @@
       <input type="password" id="password" name="password" class="form-control mb-1" placeholder="비밀번호" required>
       <input type="password" id="confirmPassword" name="confirmPassword" class="form-control mb-1" placeholder="비밀번호 확인" required>
       <div th:if="${passwordError}" class="error-message" th:text="${passwordError}"></div>
-
+      <br>
       <!-- 이메일 입력 -->
       <h3 class="mb-3">이메일 입력</h3>
       <input type="email" name="email" class="form-control mb-1" placeholder="이메일" required th:value="${memberDto.email}">
       <div th:if="${valid_email}" class="error-message" th:text="${valid_email}"></div>
-
+      <br>
       <!-- 제출 버튼 -->
       <button type="submit" class="btn btn-primary">회원가입 완료</button>
     </form>
