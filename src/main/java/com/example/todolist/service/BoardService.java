@@ -1,6 +1,5 @@
 package com.example.todolist.service;
 
-import com.example.todolist.controller.BoardController;
 import com.example.todolist.dto.BoardDto;
 import com.example.todolist.entity.Board;
 import com.example.todolist.entity.Member;
@@ -17,11 +16,6 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
-
-    public List<Board> findAllBoardList() {
-        List<Board> boardList = boardRepository.findAll();
-        return boardList;
-    }
 
     public List<Board> findBoardsByMember(String memberName) {
         return boardRepository.findBoardsByMember(memberName); // 로그인된 사용자 이름인 게시글만 반환

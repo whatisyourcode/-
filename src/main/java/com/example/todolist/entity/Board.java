@@ -31,8 +31,10 @@ public class Board {
     private boolean completed;
 
     private boolean editing = false;
-
+    
+    // 작성자와의 관계
     @ManyToOne
     @JoinColumn(name ="memberId")
     private Member member;
+
 }

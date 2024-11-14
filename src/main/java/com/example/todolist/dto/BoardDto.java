@@ -25,4 +25,5 @@ public class BoardDto {
     private String createdUser;
 
     private boolean completed;
+
 }
