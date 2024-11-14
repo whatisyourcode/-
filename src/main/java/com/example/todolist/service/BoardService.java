@@ -16,7 +16,6 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
-
     public List<Board> findBoardsByMember(String memberName) {
         return boardRepository.findBoardsByMember(memberName); // 로그인된 사용자 이름인 게시글만 반환
     }

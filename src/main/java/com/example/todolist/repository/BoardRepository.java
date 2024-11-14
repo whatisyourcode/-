@@ -14,6 +14,4 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
 
     @Query("SELECT b FROM Board b WHERE b.createdUser = :memberName")
     List<Board> findBoardsByMember(@Param("memberName") String memberName);
-
-    List<Board> findCategory(String category);
 }
