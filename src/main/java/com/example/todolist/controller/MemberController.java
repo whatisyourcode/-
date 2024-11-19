@@ -36,22 +36,7 @@ public class MemberController {
     public String login() {
         return "/member/login";
     }
-
-//    Spring Security 로 인한 주석처리.
-//    @PostMapping("/login")
-//    public String login(@ModelAttribute User user, HttpSession session) {
-//        System.out.println(userService.isValidUser(user.getUserId(), user.getPassword()));
-//        System.out.println("------------------------------------");
-//            if(userService.isValidUser(user.getUserId(), user.getPassword())) {
-//                session.setAttribute("user", user);
-//                // 로그인 성공시
-//                return "redirect:/board/todoBoard";
-//            } else {
-//                return  "redirect:/login?error";
-//            }
-//    }
-
-
+    
 
     @GetMapping("/registerForm")
     public String registerForm(Model model) {

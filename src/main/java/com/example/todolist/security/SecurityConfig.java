@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 
 @Configuration
@@ -35,6 +36,11 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder(); // BCrypt 해시 알고리즘 사용
     }
 
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new CustomAuthenticationSuccessHandler();
+    }
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -49,6 +55,7 @@ public class SecurityConfig {
                 .formLogin()
                 .loginPage("/member/home")  // 로그인 페이지
                 .loginProcessingUrl("/login")
+                .successHandler(authenticationSuccessHandler())
                 .defaultSuccessUrl("/board/todoBoard", true)
                 .failureUrl("/member/home?error=true")  // 로그인 실패 시
                 .permitAll()

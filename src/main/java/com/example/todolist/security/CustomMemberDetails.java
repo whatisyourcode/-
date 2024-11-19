@@ -44,6 +44,11 @@ public class CustomMemberDetails implements UserDetails {
         return member.getMemberId();
     }
 
+    @Override
+    public String toString() {
+        return getUsername(); // 비밀번호를 포함하지 않음
+    }
+
 
     // 계정 만료 여부 체크
     // 항상 계정이 만료되지 않았다고 반환 (true)

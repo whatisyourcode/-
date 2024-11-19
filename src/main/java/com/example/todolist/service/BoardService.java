@@ -28,6 +28,7 @@ public class BoardService {
         Board board = boardRepository.findById(boardId).
                 orElseThrow(() -> new RuntimeException("board not found Exception"));
         board.setCompleted(true);
+        board.setEditing(false);
         boardRepository.save(board);
     }
 
