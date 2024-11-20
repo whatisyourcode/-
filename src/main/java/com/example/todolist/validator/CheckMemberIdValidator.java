@@ -15,7 +15,7 @@ public class CheckMemberIdValidator extends AbstractValidator<MemberDto>{
     @Override
     protected void doValidate(MemberDto dto, Errors errors) {
         if(memberRepository.existsByMemberId(dto.getMemberId())){
-            errors.rejectValue("memberId","아이디 중복 오류", "이미 사용중인 닉네임입니다.");
+            errors.rejectValue("memberId","아이디 중복 오류", "이미 사용중인 아이디입니다.");
         }
     }
 }

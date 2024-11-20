@@ -22,13 +22,8 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
     public Member registerMember(MemberDto memberDto) {
-        // 비밀번호 암호화
         Member member = toMemberEntity(memberDto);
         return memberRepository.save(member);
-    }
-
-    public Member findByMemberId(Long memberId) {
-        return memberRepository.findById(memberId).orElse(null);
     }
 
     public Member toMemberEntity(MemberDto memberDto) {
@@ -50,6 +45,7 @@ public class MemberService {
             String validKeyName = String.format("valid_%s", fieldError.getField());
             validatorResult.put(validKeyName, fieldError.getDefaultMessage());
         }
+
         return validatorResult;
     }
 }

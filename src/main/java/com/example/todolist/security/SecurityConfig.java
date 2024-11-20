@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,10 +22,21 @@ public class SecurityConfig {
 
     private final CustomMemberDetailsService customMemberDetailsService;
 
+    // 실제 동작 흐름
+    // 사용자가 로그인 폼에서 ID와 비밀번호를 입력.
+    // Spring Security는 입력받은 ID를 사용해 customMemberDetailsService에서 사용자 정보를 로드.
+    // 로드된 사용자 정보와 입력받은 비밀번호를 PasswordEncoder로 비교.
+    // 인증 성공 시 사용자에게 권한 정보를 부여하고 인증 세션 생성.
+    // 인증 실패 시 로그인 실패 처리 로직 실행.
+
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
+        // 사용자가 로그인 요청을 보낼 때, Spring Security는 DaoAuthenticationProvider를 사용해 인증을 진행.
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        // 사용자 정보를 가져오는 서비스(UserDetailsService)를 설정
+        // customMemberDetailsService는 사용자의 이름, 비밀번호, 권한 등 세부 정보를 가져오는 커스텀 서비스
         provider.setUserDetailsService(customMemberDetailsService);
+        // 비밀번호 암호화를 처리하는 PasswordEncoder를 사용하여 암호화된 상태로 저장 및 기존 비밀번호와 비교.
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
@@ -36,6 +46,8 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder(); // BCrypt 해시 알고리즘 사용
     }
 
+    // AuthenticationSuccessHandler
+    // Spring Security의 인터페이스로, 사용자가 로그인에 성공했을 때 추가 작업을 정의할 수 있음.
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
         return new CustomAuthenticationSuccessHandler();

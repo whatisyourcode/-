@@ -36,7 +36,7 @@ public class MemberController {
     public String login() {
         return "/member/login";
     }
-    
+
 
     @GetMapping("/registerForm")
     public String registerForm(Model model) {
@@ -69,14 +69,5 @@ public class MemberController {
         return "redirect:/member/home";
     }
 
-//    @GetMapping("/register/memberIdConfirm/{memberId}")
-//    public ResponseEntity<Boolean> checkMemberId(@PathVariable String memberId){
-//        return ResponseEntity.ok(memberService.isUserIdExist(memberId));
-//    }
-//
-//    @GetMapping("/register/nameConfirm/{name}")
-//    public ResponseEntity<Boolean> checkName(@PathVariable String name){
-//        return ResponseEntity.ok(memberService.isUsernameExist(name));
-//    }
 
 }

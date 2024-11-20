@@ -27,9 +27,6 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
-    private final MemberService memberService;
-    private final MemberRepository memberRepository;
-
 
     @GetMapping("/todoBoard")
     public String boardList(Model model) {
@@ -63,8 +60,7 @@ public class BoardController {
             return "/board/todoBoard";
         }
         Member member = customMemberDetails.getMember();
-        Board board = boardService.DTOtoEntityForRegister(boardDto,member);
-        boardService.registerBoard(board);
+        boardService.registerBoard(boardDto,member);
         return "redirect:/board/todoBoard";
     }
 

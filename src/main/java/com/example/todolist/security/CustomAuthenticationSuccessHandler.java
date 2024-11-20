@@ -15,11 +15,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         String username = authentication.getName();
-        System.out.println(authentication.getName() + "---------lslsls");
-        log.info("Successfully authenticated user: " + username);
         Cookie userCookie = new Cookie("username", username);
         userCookie.setPath("/");
-        userCookie.setMaxAge(60 * 60 * 24); // 24시간
+        userCookie.setMaxAge(60 * 60 * 720); // 30일
         userCookie.setSecure(true); // HTTPS에서만 사용
         userCookie.setHttpOnly(true); // JavaScript에서 접근 불가
         response.addCookie(userCookie);
