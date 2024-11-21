@@ -26,4 +26,5 @@ public class BoardDto {
 
     private boolean completed;
 
+    private Long categoryId;
 }

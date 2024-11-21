@@ -37,4 +37,5 @@ public class Board {
     @JoinColumn(name ="memberId")
     private Member member;
 
+    private Long categoryId;
 }

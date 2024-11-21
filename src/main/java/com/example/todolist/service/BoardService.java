@@ -16,12 +16,16 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
+    public List<Board> findBoardsByMemberAndCategory(Member member, Long categoryId) {
+        return boardRepository.findBoardsByMemberAndCategoryId(member, categoryId);
+    }
+
     public List<Board> findBoardsByMember(String memberName) {
         return boardRepository.findBoardsByMember(memberName); // 로그인된 사용자 이름인 게시글만 반환
     }
 
-    public void registerBoard(BoardDto boardDto, Member member) {
-        Board board = DTOtoEntityForRegister(boardDto, member);
+    public void registerBoard(BoardDto boardDto, Member member,Long categoryId) {
+        Board board = DTOtoEntityForRegister(boardDto, member,categoryId);
         boardRepository.save(board);
     }
 
@@ -65,7 +69,7 @@ public class BoardService {
 
 
     // DTO -> Entity
-    public Board DTOtoEntityForRegister(BoardDto boardDto, Member member){
+    public Board DTOtoEntityForRegister(BoardDto boardDto, Member member, Long categoryId){
         return new Board(
                 boardDto.getBoardId(),
                 boardDto.getContent(),
@@ -75,7 +79,8 @@ public class BoardService {
                 member.getMemberName(),
                 false,
                 false,
-                member
+                member,
+                categoryId
         );
     }
 

@@ -2,10 +2,12 @@ package com.example.todolist.controller;
 
 import com.example.todolist.dto.BoardDto;
 import com.example.todolist.entity.Board;
+import com.example.todolist.entity.Category;
 import com.example.todolist.entity.Member;
 import com.example.todolist.repository.MemberRepository;
 import com.example.todolist.security.CustomMemberDetails;
 import com.example.todolist.service.BoardService;
+import com.example.todolist.service.CategoryService;
 import com.example.todolist.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,40 +29,65 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
+    private final CategoryService categoryService;
 
     @GetMapping("/todoBoard")
-    public String boardList(Model model) {
-        // 로그인된 사용자의 인증 정보를 가져옵니다.
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        // Spring Security에서 기본적으로 제공하는 Principal을 통해, 현재 인증된 사용자의 정보를 가져옵니다.
-        // authentication.getPrincipal()은 기본적으로 UserDetails 객체를 반환합니다.
-        CustomMemberDetails customMemberDetails = (CustomMemberDetails) authentication.getPrincipal();
-
-        // CustomMemberDetails는 UserDetails를 구현한 클래스이므로, 이를 통해 사용자에 대한 추가 정보를 쉽게 가져올 수 있습니다.
+    public String boardList(@RequestParam(value = "category", required = false)Long categoryId, Model model) {
+        // Security로 사용자 정보 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();         // 로그인된 사용자의 인증 정보를 가져옵니다.
+        CustomMemberDetails customMemberDetails = (CustomMemberDetails) authentication.getPrincipal();   // Spring Security에서 기본적으로 제공하는 Principal을 통해, 현재 인증된 사용자의 정보를 가져옵니다.
         String memberName = customMemberDetails.getMember().getMemberName(); // 로그인된 사용자의 실제 이름을 가져옵니다.
 
-        // 로그인된 사용자만의 게시글을 가져옴
-        List<Board> boardList = boardService.findBoardsByMember(memberName);
 
-        model.addAttribute("boardList",boardList);
+        // 모든 카테고리 출력
+        List<Category> categories = categoryService.findAllCategories();
+        model.addAttribute("categories", categories);
 
-        // 초기값 boardDto 가 없으면 에러가 나기 때문에 BoardDto를 임시로 사용.
-        model.addAttribute("boardDto",new BoardDto());
+
+        if (categoryId == null) {
+            categoryId = categoryService.getFirstValidCategoryId(categories);    // 카테고리가 없거나 유효하지 않으면 첫 번째 유효한 카테고리를 선택.
+        }
+
+
+        Member member = customMemberDetails.getMember();
+//        List<Board> boardList = boardService.findBoardsByMemberAndCategory(member,categoryId);
+
+        Category category = categoryService.findCategoryById(categoryId);
+
+        model.addAttribute("boardList", category.getBoardList());
+
+        model.addAttribute("boardDto",new BoardDto());  // 초기값 boardDto 가 없으면 에러가 나기 때문에 BoardDto를 임시로 사용.
 
         return "/board/todoBoard";
     }
+
+    @PostMapping("/addCategory")
+    public String addCategory(@RequestParam("categoryName") String categoryName, Model model){
+
+        Category category = new Category();
+        category.setName(categoryName);
+
+        categoryService.saveCategory(category);
+
+        List<Category> categories = categoryService.findAllCategories();
+        model.addAttribute("categories", categories);
+
+        return "redirect:/board/todoBoard";
+    }
+
 
     @PostMapping("/addTodoBoard")
     public String addToBoard(@Valid @ModelAttribute("boardDto") BoardDto boardDto, Errors errors, Model model,
                              @AuthenticationPrincipal CustomMemberDetails customMemberDetails) {
         if (errors.hasErrors()) {
-            List<Board> boardList = boardService.findBoardsByMember(customMemberDetails.getMember().getMemberName());
-            model.addAttribute("boardList", boardList);
+            List<Category> categories = categoryService.findAllCategories();
+            model.addAttribute("categories", categories);
             return "/board/todoBoard";
         }
+        log.info("--------------"+boardDto.getCategoryId());
+
         Member member = customMemberDetails.getMember();
-        boardService.registerBoard(boardDto,member);
+        boardService.registerBoard(boardDto,member,boardDto.getCategoryId());
         return "redirect:/board/todoBoard";
     }
 
