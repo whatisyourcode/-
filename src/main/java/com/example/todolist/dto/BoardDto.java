@@ -1,5 +1,6 @@
 package com.example.todolist.dto;
 
+import com.example.todolist.entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

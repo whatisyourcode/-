@@ -32,10 +32,7 @@ public class Board {
 
     private boolean editing = false;
 
-    // 작성자와의 관계
     @ManyToOne
-    @JoinColumn(name ="memberId")
-    private Member member;
-
-    private Long categoryId;
+    @JoinColumn(name = "category_id")
+    private Category category;
 }

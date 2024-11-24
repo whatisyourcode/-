@@ -1,6 +1,7 @@
 package com.example.todolist.service;
 
 import com.example.todolist.entity.Category;
+import com.example.todolist.entity.Member;
 import com.example.todolist.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,12 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
+    // 각 멤버가 갖고 있는 카테고리를 가져오기
+    public List<Category> findByMember(Member member) {
+        return categoryRepository.findCategoryByMember(member);
+    }
+
+    // 카테고리 저장
     public void saveCategory(Category category) {
         categoryRepository.save(category);
     }
@@ -22,29 +29,8 @@ public class CategoryService {
                 .orElseThrow(() -> new RuntimeException("Category not found"));
     }
 
-
     public List<Category> findAllCategories() {
         return categoryRepository.findAll();
     }
 
-    public Category findCategoryBy(String name) {
-        return categoryRepository.findByName(name);
-    }
-
-    // 첫 번째 유효한 카테고리 ID를 찾는 메서드
-    public Long getFirstValidCategoryId(List<Category> categories) {
-        for (Category category : categories) {
-            if (category.getId() != null) {
-                return category.getId();  // 유효한 카테고리 ID를 반환
-            }
-        }
-
-        // 유효한 카테고리가 없으면 기본 카테고리 생성
-        Category defaultCategory = new Category();
-        defaultCategory.setName("Basic Category");
-        defaultCategory.setId(1L);
-        categoryRepository.save(defaultCategory);
-
-        return defaultCategory.getId();
-    }
 }

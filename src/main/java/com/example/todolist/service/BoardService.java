@@ -2,6 +2,7 @@ package com.example.todolist.service;
 
 import com.example.todolist.dto.BoardDto;
 import com.example.todolist.entity.Board;
+import com.example.todolist.entity.Category;
 import com.example.todolist.entity.Member;
 import com.example.todolist.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,17 +16,16 @@ import java.util.List;
 public class BoardService {
 
     private final BoardRepository boardRepository;
-
-    public List<Board> findBoardsByMemberAndCategory(Member member, Long categoryId) {
-        return boardRepository.findBoardsByMemberAndCategoryId(member, categoryId);
-    }
+    private final CategoryService categoryService;
 
     public List<Board> findBoardsByMember(String memberName) {
         return boardRepository.findBoardsByMember(memberName); // 로그인된 사용자 이름인 게시글만 반환
     }
 
-    public void registerBoard(BoardDto boardDto, Member member,Long categoryId) {
-        Board board = DTOtoEntityForRegister(boardDto, member,categoryId);
+
+    public void registerBoard(BoardDto boardDto, Member member) {
+        Category category = categoryService.findCategoryById(boardDto.getCategoryId());
+        Board board = DTOtoEntityForRegister(boardDto, member, category);
         boardRepository.save(board);
     }
 
@@ -69,7 +69,7 @@ public class BoardService {
 
 
     // DTO -> Entity
-    public Board DTOtoEntityForRegister(BoardDto boardDto, Member member, Long categoryId){
+    public Board DTOtoEntityForRegister(BoardDto boardDto, Member member, Category category){
         return new Board(
                 boardDto.getBoardId(),
                 boardDto.getContent(),
@@ -79,9 +79,13 @@ public class BoardService {
                 member.getMemberName(),
                 false,
                 false,
-                member,
-                categoryId
+                category
         );
+    }
+
+    // Rediect할 CategoryId 찾기위한 메서드
+    public Long getCategoryId(Long boardId){
+        return boardRepository.findCategoryIdByBoardId(boardId);
     }
 
 }

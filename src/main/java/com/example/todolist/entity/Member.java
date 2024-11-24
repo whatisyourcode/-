@@ -31,5 +31,5 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     @ToString.Exclude
-    private List<Board> todoBoards = new ArrayList<>();
+    private List<Category> categories = new ArrayList<>();
 }

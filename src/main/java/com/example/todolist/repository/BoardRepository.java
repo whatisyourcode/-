@@ -1,6 +1,7 @@
 package com.example.todolist.repository;
 
 import com.example.todolist.entity.Board;
+import com.example.todolist.entity.Category;
 import com.example.todolist.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,5 +16,6 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
     @Query("SELECT b FROM Board b WHERE b.createdUser = :memberName")
     List<Board> findBoardsByMember(@Param("memberName") String memberName);
 
-    List<Board> findBoardsByMemberAndCategoryId(Member member, Long categoryId);
-}
+
+    Long findCategoryIdByBoardId(Long boardId);
+  }
