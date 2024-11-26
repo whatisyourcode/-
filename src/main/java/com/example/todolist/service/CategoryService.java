@@ -33,4 +33,35 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
+    public void deleteCategoryById(Long id) {
+        categoryRepository.deleteById(id);
+    }
+
+    public void setEditMode(Long categoryId, boolean editing) {
+        Category category = categoryRepository.findByCategoryId(categoryId);
+        category.setEditing(editing);
+        categoryRepository.save(category);
+    }
+
+    // 카테고리 이름 업데이트
+    public void updateCategoryName(Long categoryId, String newName) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+        category.setName(newName);
+        category.setEditing(false); // 수정 모드 해제
+        categoryRepository.save(category);
+    }
+
+    public Category findById(Long categoryId,Member member) {
+
+        if(categoryId == null){
+            Category newCategory = new Category();
+            newCategory.setName("basic category");
+            newCategory.setMember(member);
+            categoryRepository.save(newCategory);
+            return newCategory;
+        }
+
+        return categoryRepository.findByCategoryId(categoryId);
+    }
 }

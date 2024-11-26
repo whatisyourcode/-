@@ -25,7 +25,9 @@ public class BoardService {
 
     public void registerBoard(BoardDto boardDto, Member member) {
         Category category = categoryService.findCategoryById(boardDto.getCategoryId());
+
         Board board = DTOtoEntityForRegister(boardDto, member, category);
+
         boardRepository.save(board);
     }
 
@@ -50,7 +52,7 @@ public class BoardService {
     public void setEditMode(Long boardId, boolean editing) {
         Board board = boardRepository.findById(boardId).
                 orElseThrow(() -> new RuntimeException("board not found Exception"));
-        board.setEditing(editing); // ?
+        board.setEditing(editing);
         boardRepository.save(board);
     }
 
@@ -85,7 +87,9 @@ public class BoardService {
 
     // Rediect할 CategoryId 찾기위한 메서드
     public Long getCategoryId(Long boardId){
-        return boardRepository.findCategoryIdByBoardId(boardId);
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new RuntimeException("board not found Exception"));
+        return board.getCategory().getCategoryId();
     }
 
 }

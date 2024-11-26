@@ -4,11 +4,13 @@ import com.example.todolist.dto.BoardDto;
 import com.example.todolist.entity.Board;
 import com.example.todolist.entity.Category;
 import com.example.todolist.entity.Member;
+import com.example.todolist.repository.BoardRepository;
 import com.example.todolist.repository.MemberRepository;
 import com.example.todolist.security.CustomMemberDetails;
 import com.example.todolist.service.BoardService;
 import com.example.todolist.service.CategoryService;
 import com.example.todolist.service.MemberService;
+import com.nimbusds.oauth2.sdk.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -32,6 +35,8 @@ public class BoardController {
     private final BoardService boardService;
     private final CategoryService categoryService;
 
+
+
     @GetMapping("/todoBoard")
     public String boardList(@RequestParam(value = "categoryId", required = false)Long categoryId, Model model) {
         // Security로 사용자 정보 가져오기
@@ -43,12 +48,15 @@ public class BoardController {
         List<Category> categories = categoryService.findByMember(member);
         model.addAttribute("categories", categories);
 
-
+        if(categoryId != null) {
+            Category category = categoryService.findCategoryById(categoryId);
+            model.addAttribute("selectedCategory", category);
+        }
 
         // url로부터 해당 categoryId를 가져와서 model에 등록.
         for(Category category : categories) {
-            if(category.getCategoryId().equals(categoryId)) {   // 해당 categoryId에 일치하는 카테고리를 가져와서
-                List<Board> boardList = category.getBoardList(); // 카테고리의 boardList 데이터를 가져오기.
+            if (category.getCategoryId().equals(categoryId)) {   // 해당 categoryId에 일치하는 카테고리를 가져와서
+                List<Board> boardList = category.getBoardList();
                 model.addAttribute("boardList", boardList);
             }
         }
@@ -62,7 +70,13 @@ public class BoardController {
     }
 
     @PostMapping("/addCategory")
-    public String addCategory(@RequestParam("categoryName") String categoryName, Model model, @AuthenticationPrincipal CustomMemberDetails customMemberDetails){
+    public String addCategory(@RequestParam("categoryName") String categoryName, RedirectAttributes redirectAttributes, @AuthenticationPrincipal CustomMemberDetails customMemberDetails){
+        // 공백이나 빈 문자열을 확인하는 더 좋은 방법
+        if (StringUtils.isBlank(categoryName)) {
+            // 오류 메시지를 RedirectAttributes에 추가
+            redirectAttributes.addFlashAttribute("error", "카테고리 이름을 입력해주세요.");
+            return "redirect:/board/todoBoard";
+        }
         Member member = customMemberDetails.getMember();
 
         Category category = new Category();
@@ -78,13 +92,18 @@ public class BoardController {
     @PostMapping("/addTodoBoard")
     public String addToBoard(@Valid @ModelAttribute("boardDto") BoardDto boardDto, Errors errors, Model model,
                              @AuthenticationPrincipal CustomMemberDetails customMemberDetails) {
+
+        Member member = customMemberDetails.getMember();
+        // 카테고리가 없을 경우 기본 카테고리를 생성하는 서비스 로직
+        Category category = categoryService.findById(boardDto.getCategoryId(),member);
+        boardDto.setCategoryId(category.getCategoryId());
+
         if (errors.hasErrors()) {
             List<Category> categories = categoryService.findAllCategories();
             model.addAttribute("categories", categories);
-            return "/board/todoBoard";
+            return "redirect:/board/todoBoard?categoryId=" + boardDto.getCategoryId();
         }
 
-        Member member = customMemberDetails.getMember();
         boardService.registerBoard(boardDto,member);
         return "redirect:/board/todoBoard?categoryId=" + boardDto.getCategoryId();
     }
@@ -99,14 +118,15 @@ public class BoardController {
     @PostMapping("/inCompletedTodoBoard/{boardId}")
     public String inCompletedTodoBoard(@PathVariable("boardId") Long boardId) {
         boardService.incompleteBoard(boardId);
-
-        return "redirect:/board/todoBoard";
+        Long categoryId = boardService.getCategoryId(boardId);
+        return "redirect:/board/todoBoard?categoryId=" + categoryId;
     }
 
     @GetMapping("/editMode/{boardId}")
     public String editMode(@PathVariable("boardId") Long boardId) {
         boardService.setEditMode(boardId,true);
-        return "redirect:/board/todoBoard";
+        Long categoryId = boardService.getCategoryId(boardId);
+        return "redirect:/board/todoBoard?categoryId=" + categoryId;
     }
 
     @PostMapping("/updateTodoBoard")
@@ -119,13 +139,15 @@ public class BoardController {
         }
         boardService.updatedBoard(boardDto);
         boardService.setEditMode(boardDto.getBoardId(),false);
-        return "redirect:/board/todoBoard";
+        Long categoryId = boardService.getCategoryId(boardDto.getBoardId());
+        return "redirect:/board/todoBoard?categoryId=" + categoryId;
     }
 
     @PostMapping("deleteTodoBoard/{boardId}")
     public String deleteTodoBoard(@PathVariable("boardId") Long boardId) {
+        Long categoryId = boardService.getCategoryId(boardId);
         boardService.deleteBoard(boardId);
-        return "redirect:/board/todoBoard";
+        return "redirect:/board/todoBoard?categoryId=" + categoryId;
     }
 
 }
