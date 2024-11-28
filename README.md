@@ -14,9 +14,11 @@
 5. Features screen to fit on mobile
 
 
+---------------------------------------------------------------------------------------------------------------------------------------<br>
  
 ### 빌드 전 mysql 설치 및 설정(필수) 
-mac : brew install mysql  <br>
+#### mac     
+        brew install mysql  <br>
         mysql -u root -p   <br>
         create database miniproj1;  <br> 
         create user 'admin'@'localhost' identified by 'qwer1234';  <br>
@@ -25,7 +27,8 @@ mac : brew install mysql  <br>
 
 
 
-ubuntu : sudo apt install mysql-server : mysql 설치  <br>
+#### ubuntu 
+            sudo apt install mysql-server : mysql 설치  <br>
             sudo mysql -u root -p  <br>
             create database miniproj1;  <br>
             create user 'admin'@'localhost' identified by 'qwer1234';  <br>
