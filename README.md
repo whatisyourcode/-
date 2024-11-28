@@ -15,7 +15,28 @@
 
 
 -------------------------------------------------------------------------------------------------------------------<br>
- 
+## Installation
+### Using Docker
+Docker를 사용해 Spring Boot 애플리케이션과 MySQL 데이터베이스를 손쉽게 실행할 수 있는 환경을 구성합니다.
+
+Docker 설치
+Docker 설치 가이드를 참고하여 Docker를 설치하세요.
+Docker Compose도 함께 설치되어야 합니다.
+
+- 컨테이너 빌드 및 실행
+```bash
+docker-compose up --build
+```
+- 컨테이너 중지
+```bash
+docker-compose down
+```
+- 컨테이너 중지 및 데이터 삭제
+```bash
+docker-compose down -v
+```
+
+## Docker 없이 설정 
 ### 빌드 전 mysql 설치 및 설정(필수) 
 #### mac     
         brew install mysql  

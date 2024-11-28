@@ -1,0 +1,34 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: .
+      target: builder
+    ports:
+      - "8099:8099"
+    volumes:
+      - ./src/main/resources:/app/src/main/resources
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/miniproj1?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: qwer1234
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: todomysql
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: qwer1234
+      MYSQL_DATABASE: miniproj1
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: qwer1234
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  db_data:
