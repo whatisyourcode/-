@@ -16,21 +16,21 @@
 
  
 ### 빌드 전 mysql 설치 및 설정(필수) 
-mac : brew install mysql 
-        mysql -u root -p 
-        create database miniproj1;
-        create user 'admin'@'localhost' identified by 'qwer1234';
-        grant all privileges on miniproj1.* to 'admin'@'qwer1234';
-        flush privleges; 
+mac : brew install mysql  <br>
+        mysql -u root -p   <br>
+        create database miniproj1;  <br> 
+        create user 'admin'@'localhost' identified by 'qwer1234';  <br>
+        grant all privileges on miniproj1.* to 'admin'@'qwer1234';  <br> 
+        flush privleges;   <br>
 
 
 
-ubuntu : sudo apt install mysql-server : mysql 설치
-            sudo mysql -u root -p
-            create database miniproj1;
-            create user 'admin'@'localhost' identified by 'qwer1234';
-            grant all privileges on miniproj1.* to 'admin'@'qwer1234';
-            flush privleges; 
+ubuntu : sudo apt install mysql-server : mysql 설치  <br>
+            sudo mysql -u root -p  <br>
+            create database miniproj1;  <br>
+            create user 'admin'@'localhost' identified by 'qwer1234';  <br>
+            grant all privileges on miniproj1.* to 'admin'@'qwer1234';  <br>
+            flush privleges;   <br>
 
 ### 빌드 시 사전에 Gradle 설치
 mac: brew install gradle
