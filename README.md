@@ -23,7 +23,7 @@
         create database miniproj1; 
         create user 'admin'@'localhost' identified by 'qwer1234';  
         grant all privileges on miniproj1.* to 'admin'@'qwer1234'; 
-        flush privleges;   
+        flush privileges;  
 
 
 
@@ -33,7 +33,7 @@
             create database miniproj1;  
             create user 'admin'@'localhost' identified by 'qwer1234'; 
             grant all privileges on miniproj1.* to 'admin'@'qwer1234';
-            flush privleges;  
+            flush privileges;  
 
 ### 빌드 시 사전에 Gradle 설치
 #### mac
