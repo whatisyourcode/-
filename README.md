@@ -45,8 +45,8 @@ sudo apt-get install gradle
 
 
 ### 빌드 
-프로젝트 root 폴더에 진입시 gradle.bat 파일이 있는 위치에서
-./gradlew build 명령어
+#### 프로젝트 root 폴더에 진입시 gradle.bat 파일이 있는 위치에서
+ ./gradlew build
 
-빌드 성공 시 build/libs/ 폴더에서 생성된 jar 파일 확인.
+#### 빌드 성공 시 build/libs/ 폴더에서 생성된 jar 파일 대상으로
   java -jar   파일.jar 
