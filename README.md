@@ -36,9 +36,12 @@
             flush privleges;   <br>
 
 ### 빌드 시 사전에 Gradle 설치
-mac: brew install gradle
-ubuntu: sudo apt-get install gradle
-(설치 후 gradle -v 으로 버전 및 설치 확인)
+#### mac
+brew install gradle
+#### ubuntu 
+sudo apt-get install gradle
+
+
 
 
 ### 빌드 
