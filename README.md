@@ -16,6 +16,8 @@
 ### ERD 
 ![image](https://github.com/user-attachments/assets/3d15fecb-ebc2-45b1-adea-6136f276d74c)
 
+### API
+![image](https://github.com/user-attachments/assets/4d35b749-9c50-4a86-a4e4-b0c7f86d274f)
 
 -------------------------------------------------------------------------------------------------------------------<br>
 ## Installation
