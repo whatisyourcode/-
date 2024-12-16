@@ -13,6 +13,9 @@
 4. Save user logins using cookies
 5. Features screen to fit on mobile
 
+### ERD 
+![image](https://github.com/user-attachments/assets/3d15fecb-ebc2-45b1-adea-6136f276d74c)
+
 
 -------------------------------------------------------------------------------------------------------------------<br>
 ## Installation
